@@ -1,14 +1,22 @@
 let user = 'cdodiego';
-const urlChatters = `http://tmi.twitch.tv/group/user/${user}/chatters`;
+const urlChatters = `http://tmi.twitch.tv/group/user/`;
+const urlChatters2 = '/chatters'
 const urlBots = 'http://api.twitchinsights.net/v1/bots/all';
 
 async function getBots() {
-    let chat = await callURL(urlChatters);
+    let chat = await callURL(urlChatters + user + urlChatters2);
     let bots = await callURL(urlBots);
-    console.log(chat);
-    console.log(bots);
-    getChatList(chat);
-    getBotsList(bots);
+    let chatList = getChatList(chat);
+    let botList = getBotsList(bots);
+    let botsInChat = getArraysIntersection(chatList, botList);
+    $('#resultado').html(`${user} tiene ${botsInChat.length} en el chat`);
+    let htmlList = '<ul class="list-group">';
+    for(let i = 0; i<botsInChat.length; i++) {
+        htmlList+= `<li class="list-group-item">${botsInChat[i]}</li>`;
+    }
+    htmlList+= '</ul>';
+    $('#List').show();
+    $('#bots').html(htmlList);
 }
 
 function getChatList(chat) {
@@ -23,11 +31,16 @@ function getChatList(chat) {
     return userschat;
 }
 
+function getArraysIntersection(a1,a2){
+    return  a1.filter(function(n) { return a2.indexOf(n) !== -1;});
+}
+
 function getBotsList(bots) {
     let botlist = [];
     for(let i = 0; i< bots.bots.length; i++) {
         botlist.push(bots.bots[i][0]);
     }
+    return botlist;
 }
 
 async function callURL(url) {
@@ -38,5 +51,12 @@ async function callURL(url) {
     return JSON.parse(call.contents);
 }
 
-console.log('holi');
-getBots();
+$( document ).ready(function() {
+    $('#List').hide();
+    $('#resultado').html('');
+});
+
+$( "#buscar" ).click(function() {
+    user = $('#usr').val();
+    getBots();
+});
