@@ -4,6 +4,7 @@ const urlChatters2 = '/chatters'
 const urlBots = 'http://api.twitchinsights.net/v1/bots/all';
 
 async function getBots() {
+    console.log(user);
     let chat = await callURL(urlChatters + user + urlChatters2);
     let bots = await callURL(urlBots);
     let chatList = getChatList(chat);
