@@ -10,7 +10,7 @@ async function getBots() {
     let chatList = getChatList(chat);
     let botList = getBotsList(bots);
     let botsInChat = getArraysIntersection(chatList, botList);
-    $('#resultado').html(`${user} tiene ${botsInChat.length} en el chat`);
+    $('#resultado').html(`${user} tiene ${botsInChat.length} bots en el chat`);
     let htmlList = '<ul class="list-group">';
     for(let i = 0; i<botsInChat.length; i++) {
         htmlList+= `<li class="list-group-item">${botsInChat[i]}</li>`;
