@@ -57,6 +57,6 @@ $( document ).ready(function() {
 });
 
 $( "#buscar" ).click(function() {
-    user = $('#usr').val();
+    user = $('#usr').val().toLowerCase();
     getBots();
 });
