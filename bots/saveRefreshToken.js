@@ -1,7 +1,7 @@
-async function salvarToken(token) {
-    await SE_API.store.get('tokenAPI').then(async obj => {
+async function salvarToken(token, name, rfName) {
+    await SE_API.store.get(name).then(async obj => {
         if (obj == null) {
-            SE_API.store.set('tokenAPI', token);
+            SE_API.store.set(name, token);
         } else {
             token = obj.value;
         }
@@ -13,7 +13,7 @@ async function salvarToken(token) {
         }).then(res => res.json());
         console.log(res);
         if (res.status == 401) {
-            await SE_API.store.get('refreshAPI').then(async objR => {
+            await SE_API.store.get(rfName).then(async objR => {
                 if (objR != null) {
                     refresh = objR.value;
                 }
@@ -22,8 +22,8 @@ async function salvarToken(token) {
                         .then(response => response.json());
                 token = res.access_token;
                 refresh = res.refresh_token;
-                SE_API.store.set('tokenAPI', token);
-                SE_API.store.set('refreshAPI', refresh);
+                SE_API.store.set(name, token);
+                SE_API.store.set(rfName, refresh);
             });
         }
     })
