@@ -76,6 +76,8 @@ class TwitchPubSubRewards {
             "service": "twitch",
             "data": {
               "time": new Date(message.time).getTime(),
+              "username": message.user_name,
+              "username-sub": message.is_gift ? message.recipient_user_name : message.user_name,
               "tags": message,
               "sub_plan": message.sub_plan,
               "extra": message,
